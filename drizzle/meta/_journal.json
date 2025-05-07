@@ -8,6 +8,27 @@
       "when": 1746475827967,
       "tag": "0000_clear_mercury",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1746625689190,
+      "tag": "0001_optimal_thunderbird",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1746626084909,
+      "tag": "0002_fantastic_warhawk",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1746626166949,
+      "tag": "0003_tearful_roxanne_simpson",
+      "breakpoints": true
     }
   ]
 }
