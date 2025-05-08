@@ -1,9 +1,9 @@
-import ThreeScene from "@/components/ThreeScene";
-
 export default function TestPage() {
     return (
         <>
-            <ThreeScene></ThreeScene>
+            <h1>
+                No way u made it
+            </h1>
         </>
     );
 }
