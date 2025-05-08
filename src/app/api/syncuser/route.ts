@@ -3,6 +3,11 @@ import { sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import {usersTable} from "@/db/schema";
 
+export async function GET(){
+    return NextResponse.json("Jdip");
+
+}
+
 export async function POST(req: Request) {
     try {
         const { id, email, username } = await req.json();
