@@ -1,65 +1,38 @@
 "use client"
 
-import React, { useRef, useEffect } from 'react';
-import * as THREE from 'three';
+import * as THREE from 'three'
+import React, { useRef, useState } from 'react'
+import { Canvas, useFrame, ThreeElements } from '@react-three/fiber'
 
-const ThreeScene: React.FC = () => {
-    const containerRef = useRef<HTMLDivElement | null>(null);
+function Box(props: ThreeElements['mesh']) {
+    const meshRef = useRef<THREE.Mesh>(null!)
+    const [hovered, setHover] = useState(false)
+    const [active, setActive] = useState(false)
 
-    useEffect(() => {
-        if (!containerRef.current || typeof window === 'undefined') return;
+    useFrame((state, delta) => (meshRef.current.rotation.x += delta))
 
-        //Scene Setup
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(
-            75,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            1000
-        );
+    return (
+        <mesh
+            {...props}
+            ref={meshRef}
+            scale={active ? 1.5 : 1}
+            onClick={() => setActive(!active)}
+            onPointerOver={() => setHover(true)}
+            onPointerOut={() => setHover(false)}>
+            <boxGeometry args={[1, 1, 1]} />
+            <meshStandardMaterial color={hovered ? 'hotpink' : '#2f74c0'} />
+        </mesh>
+    )
+}
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        containerRef.current!.appendChild(renderer.domElement);
-
-        //Cube
-        const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-
-        camera.position.z = 5;
-
-        //Animation Loop
-        const animate = () => {
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
-            renderer.render(scene, camera);
-            requestAnimationFrame(animate);
-        };
-        animate();
-
-        //Handle Resize
-        const handleResize = () => {
-            const width = window.innerWidth;
-            const height = window.innerHeight;
-            camera.aspect = width / height;
-            camera.updateProjectionMatrix();
-            renderer.setSize(width, height);
-        };
-
-        window.addEventListener('resize', handleResize);
-
-        //Cleanup on Unmount
-        return () => {
-            window.removeEventListener('resize', handleResize);
-            renderer.dispose();
-            containerRef.current!.removeChild(renderer.domElement);
-
-        };
-    }, []);
-
-    return <div ref={containerRef} style={{ width: '100vw', height: '100vh' }} />;
-};
-
-export default ThreeScene;
+export default function InteractiveBox() {
+    return (
+        <Canvas>
+            <ambientLight intensity={Math.PI / 2} />
+            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} decay={0} intensity={Math.PI} />
+            <pointLight position={[-10, -10, -10]} decay={0} intensity={Math.PI} />
+            <Box position={[-1.2, 0, 0]} />
+            <Box position={[1.2, 0, 0]} />
+        </Canvas>
+    )
+}

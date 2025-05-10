@@ -1,11 +1,11 @@
 "use client"
 
-export default function TestPage() {
+import InteractiveBox from "@/components/ThreeScene";
+
+export default function TestPage(){
     return (
         <>
-            <h1>
-                No way u made it
-            </h1>
+            <InteractiveBox></InteractiveBox>
         </>
-    );
+    )
 }
