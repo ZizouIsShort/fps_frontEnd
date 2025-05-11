@@ -6,13 +6,20 @@ import {FirstPersonControls, OrbitControls} from "@react-three/drei";
 import * as THREE from "three";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
-function Model(){
-    const result = useLoader(GLTFLoader, "/Penguin.gltf")
+function Terrain(){
+    const result = useLoader(GLTFLoader, "/scene.gltf")
 
     return (
             <primitive object={result.scene}/>
     )
 }
+function Model(){
+    const result = useLoader(GLTFLoader, "/Penguin.gltf")
+    return (
+        <primitive object={result.scene}/>
+    )
+}
+
 
 function Dabba() {
     const boxref = useRef<THREE.Mesh>(null!);
@@ -38,7 +45,9 @@ export default function Mkc() {
         <div style={{ width: "100vw", height: "100vh", backgroundColor: "white" }}>
             <Canvas>
                 <gridHelper args={[20, 20, "pink", "blue"]}></gridHelper>
-                <OrbitControls />
+                <ambientLight intensity={1}/>
+                <OrbitControls/>
+                <Terrain/>
                 <Model/>
             </Canvas>
         </div>
