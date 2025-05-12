@@ -20,7 +20,7 @@ export default function Mkc() {
             <Canvas>
                 <gridHelper args={[20, 20, "pink", "blue"]}></gridHelper>
                 <ambientLight intensity={1} />
-                <OrbitControls />
+                <OrbitControls/>
                 <Terrain />
             </Canvas>
         </div>

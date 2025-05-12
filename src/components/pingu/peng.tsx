@@ -9,7 +9,10 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 function Model() {
     const modelRef = useRef<THREE.Group>(new THREE.Group());
-    const movement = useRef({ forward: false, backward: false, left: false, right: false });
+    const movement = useRef({ forward: false, backward: false, left: false, right: false, up: false, down: false });
+    const velo = useRef(0)
+    const h = 0.9;
+    const g = 9.8;
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -43,6 +46,11 @@ function Model() {
                 case "ArrowDown":
                     movement.current.backward = false;
                     break;
+                case " ":
+                    if(modelRef.current.position.y === 0) {
+                        velo.current = Math.sqrt(2*g*h);
+                    }
+                    break;
             }
         };
 
@@ -60,10 +68,18 @@ function Model() {
         if (!model) return;
 
         const speed = 5 * delta;
+
         if (movement.current.forward) model.position.z -= speed;
         if (movement.current.backward) model.position.z += speed;
         if (movement.current.left) model.position.x -= speed;
         if (movement.current.right) model.position.x += speed;
+
+        if(model.position.y > 0 || velo.current > 0) {
+            velo.current -= g * delta;
+            model.position.y += velo.current * delta;
+            if (model.position.y < 0) model.position.y = 0;
+        }
+
     });
 
     const result = useLoader(GLTFLoader, "/Penguin.gltf");
