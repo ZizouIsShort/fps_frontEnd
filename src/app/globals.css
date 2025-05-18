@@ -24,3 +24,177 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .animate-gradient-background {
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    pointer-events: none;
+  }
+
+  .particle-1 {
+    width: 100px;
+    height: 100px;
+    left: 10%;
+    top: 20%;
+    animation: float 15s ease-in-out infinite;
+  }
+
+  .particle-2 {
+    width: 150px;
+    height: 150px;
+    right: 15%;
+    bottom: 25%;
+    animation: float 18s ease-in-out infinite reverse;
+  }
+
+  .particle-3 {
+    width: 80px;
+    height: 80px;
+    left: 30%;
+    bottom: 15%;
+    animation: float 12s ease-in-out infinite 2s;
+  }
+
+  .particle-4 {
+    width: 120px;
+    height: 120px;
+    right: 25%;
+    top: 15%;
+    animation: float 20s ease-in-out infinite 1s;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0) translateX(0);
+      opacity: 0.4;
+    }
+    25% {
+      transform: translateY(-20px) translateX(10px);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateY(0) translateX(20px);
+      opacity: 0.4;
+    }
+    75% {
+      transform: translateY(20px) translateX(10px);
+      opacity: 0.6;
+    }
+    100% {
+      transform: translateY(0) translateX(0);
+      opacity: 0.4;
+    }
+  }
+}
+
+@layer utilities {
+  /* Minecraft-style background */
+  .minecraft-background {
+    image-rendering: pixelated;
+  }
+
+  .minecraft-grid {
+    background-size: 32px 32px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+  }
+
+  .minecraft-ground {
+    background-image: linear-gradient(to bottom, #5a9e34 0%, #5a9e34 20%, #8b5e34 20%, #8b5e34 100%);
+    image-rendering: pixelated;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .minecraft-panel {
+    image-rendering: pixelated;
+    box-shadow: inset 0 0 0 4px #555, inset 0 0 0 5px #999;
+  }
+
+  /* Minecraft block types */
+  .block-dirt {
+    background-color: #8b5e34;
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.3), inset 0 0 0 4px rgba(139, 94, 52, 0.7);
+  }
+
+  .block-grass-top {
+    background-color: #5a9e34;
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.3), inset 0 0 0 4px rgba(90, 158, 52, 0.7);
+    border-bottom: 4px solid #8b5e34;
+  }
+
+  .block-stone {
+    background-color: #7d7d7d;
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.3), inset 0 0 0 4px rgba(125, 125, 125, 0.7);
+  }
+
+  .block-cobblestone {
+    background-color: #959595;
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.3), inset 0 0 0 4px rgba(149, 149, 149, 0.7);
+    background-image: linear-gradient(45deg, #7d7d7d 25%, transparent 25%),
+    linear-gradient(-45deg, #7d7d7d 25%, transparent 25%);
+    background-size: 8px 8px;
+  }
+
+  .block-oak-planks {
+    background-color: #a0804c;
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.3), inset 0 0 0 4px rgba(160, 128, 76, 0.7);
+    background-image: linear-gradient(90deg, rgba(0, 0, 0, 0.1) 2px, transparent 2px);
+    background-size: 8px 100%;
+  }
+
+  .block-sand {
+    background-color: #e0d4a0;
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.2), inset 0 0 0 4px rgba(224, 212, 160, 0.7);
+  }
+
+  .block-gravel {
+    background-color: #7f7f7f;
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.3), inset 0 0 0 4px rgba(127, 127, 127, 0.7);
+    background-image: radial-gradient(circle, #959595 2px, transparent 2px),
+    radial-gradient(circle, #656565 1px, transparent 1px);
+    background-size: 8px 8px;
+    background-position: 0 0, 4px 4px;
+  }
+
+  /* Animation for floating blocks */
+  @keyframes float-block {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+      transform: translate(20px, 10px) rotate(90deg);
+    }
+    50% {
+      transform: translate(0, 20px) rotate(180deg);
+    }
+    75% {
+      transform: translate(-20px, 10px) rotate(270deg);
+    }
+    100% {
+      transform: translate(0, 0) rotate(360deg);
+    }
+  }
+}
