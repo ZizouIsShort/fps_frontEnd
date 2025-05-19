@@ -16,16 +16,16 @@ function Model() {
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             switch (e.key) {
-                case "ArrowLeft":
+                case "a":
                     movement.current.left = true;
                     break;
-                case "ArrowRight":
+                case "d":
                     movement.current.right = true;
                     break;
-                case "ArrowUp":
+                case "w":
                     movement.current.forward = true;
                     break;
-                case "ArrowDown":
+                case "s":
                     movement.current.backward = true;
                     break;
             }
@@ -33,16 +33,16 @@ function Model() {
 
         const handleKeyUp = (e: KeyboardEvent) => {
             switch (e.key) {
-                case "ArrowLeft":
+                case "a":
                     movement.current.left = false;
                     break;
-                case "ArrowRight":
+                case "d":
                     movement.current.right = false;
                     break;
-                case "ArrowUp":
+                case "w":
                     movement.current.forward = false;
                     break;
-                case "ArrowDown":
+                case "s":
                     movement.current.backward = false;
                     break;
                 case " ":
@@ -81,7 +81,7 @@ function Model() {
     });
 
     const result = useLoader(GLTFLoader, "/Penguin.gltf");
-    return <primitive object={result.scene} ref={modelRef} scale={[3, 3, 3]} position={[0, 1.5, 0]} />;
+    return <primitive object={result.scene} ref={modelRef} scale={[3, 3, 3]} position={[0, 1.5, 0]} rotation={[0, Math.PI, 0]}/>;
 }
 
 function Terrain() {
@@ -97,7 +97,7 @@ export default function CombinedScene() {
                 <ambientLight intensity={1} />
                 <OrbitControls />
                 <Terrain />
-                <Model />
+                <Model/>
             </Canvas>
         </div>
     );
