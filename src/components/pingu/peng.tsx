@@ -1,6 +1,6 @@
 "use client";
 
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import {Canvas, useFrame, useLoader, useThree} from "@react-three/fiber";
 import { useRef, useEffect } from "react";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -12,20 +12,22 @@ function Model() {
     const velo = useRef(0);
     const h = 0.9;
     const g = 9.8;
+    const {camera} = useThree()
 
     useEffect(() => {
+
         const handleKeyDown = (e: KeyboardEvent) => {
             switch (e.key) {
-                case "a":
+                case "d":
                     movement.current.left = true;
                     break;
-                case "d":
+                case "a":
                     movement.current.right = true;
                     break;
-                case "w":
+                case "s":
                     movement.current.forward = true;
                     break;
-                case "s":
+                case "w":
                     movement.current.backward = true;
                     break;
             }
@@ -33,16 +35,16 @@ function Model() {
 
         const handleKeyUp = (e: KeyboardEvent) => {
             switch (e.key) {
-                case "a":
+                case "d":
                     movement.current.left = false;
                     break;
-                case "d":
+                case "a":
                     movement.current.right = false;
                     break;
-                case "w":
+                case "s":
                     movement.current.forward = false;
                     break;
-                case "s":
+                case "w":
                     movement.current.backward = false;
                     break;
                 case " ":
@@ -78,6 +80,8 @@ function Model() {
             model.position.y += velo.current * delta;
             if (model.position.y < 0) model.position.y = 0;
         }
+        camera.position.copy(model.position).add(new THREE.Vector3(0, 1.6, 2))
+        camera.rotation.copy(model.rotation)
     });
 
     const result = useLoader(GLTFLoader, "/Penguin.gltf");
@@ -92,10 +96,9 @@ function Terrain() {
 export default function CombinedScene() {
     return (
         <div style={{ width: "100vw", height: "100vh", backgroundColor: "white" }}>
-            <Canvas>
+            <Canvas camera={{ fov: 120, near: 0.1, far: 1000, position: [0, 1.6, 2]}}>
                 <gridHelper args={[20, 20, "pink", "blue"]}></gridHelper>
                 <ambientLight intensity={1} />
-                <OrbitControls />
                 <Terrain />
                 <Model/>
             </Canvas>
