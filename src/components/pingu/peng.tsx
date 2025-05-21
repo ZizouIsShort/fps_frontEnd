@@ -15,19 +15,24 @@ function Model() {
     const {camera} = useThree()
 
     useEffect(() => {
+        const handleMouseMovement = (e: MouseEvent) => {
+            const sensi = 0.002;
+            const rotation = modelRef.current.rotation;
+            rotation.y -= e.movementX * sensi
+        }
 
         const handleKeyDown = (e: KeyboardEvent) => {
             switch (e.key) {
-                case "d":
+                case "a":
                     movement.current.left = true;
                     break;
-                case "a":
+                case "d":
                     movement.current.right = true;
                     break;
-                case "s":
+                case "w":
                     movement.current.forward = true;
                     break;
-                case "w":
+                case "s":
                     movement.current.backward = true;
                     break;
             }
@@ -35,16 +40,16 @@ function Model() {
 
         const handleKeyUp = (e: KeyboardEvent) => {
             switch (e.key) {
-                case "d":
+                case "a":
                     movement.current.left = false;
                     break;
-                case "a":
+                case "d":
                     movement.current.right = false;
                     break;
-                case "s":
+                case "w":
                     movement.current.forward = false;
                     break;
-                case "w":
+                case "s":
                     movement.current.backward = false;
                     break;
                 case " ":
@@ -57,10 +62,12 @@ function Model() {
 
         window.addEventListener("keydown", handleKeyDown);
         window.addEventListener("keyup", handleKeyUp);
+        window.addEventListener("mousemove", handleMouseMovement);
 
         return () => {
             window.removeEventListener("keydown", handleKeyDown);
             window.removeEventListener("keyup", handleKeyUp);
+            window.removeEventListener("mousemove", handleMouseMovement)
         };
     }, []);
 
@@ -70,18 +77,31 @@ function Model() {
 
         const speed = 5 * delta;
 
-        if (movement.current.forward) model.position.z -= speed;
-        if (movement.current.backward) model.position.z += speed;
-        if (movement.current.left) model.position.x -= speed;
-        if (movement.current.right) model.position.x += speed;
+        if (movement.current.forward) {
+            model.position.x -= Math.sin(model.rotation.y) * speed;
+            model.position.z -= Math.cos(model.rotation.y) * speed;
+        }
+        if (movement.current.backward) {
+            model.position.x += Math.sin(model.rotation.y) * speed;
+            model.position.z += Math.cos(model.rotation.y) * speed;
+        }
+        if (movement.current.left) {
+            model.position.x -= Math.cos(model.rotation.y) * speed;
+            model.position.z += Math.sin(model.rotation.y) * speed;
+        }
+        if (movement.current.right) {
+            model.position.x += Math.cos(model.rotation.y) * speed;
+            model.position.z -= Math.sin(model.rotation.y) * speed;
+        }
+
 
         if (model.position.y > 0 || velo.current > 0) {
             velo.current -= g * delta;
             model.position.y += velo.current * delta;
             if (model.position.y < 0) model.position.y = 0;
         }
-        camera.position.copy(model.position).add(new THREE.Vector3(0, 1.6, 2))
-        camera.rotation.copy(model.rotation)
+        camera.position.copy(model.position).add(new THREE.Vector3(0, 3.2, 2))
+        camera.rotation.set(0, model.rotation.y, 0)
     });
 
     const result = useLoader(GLTFLoader, "/Penguin.gltf");
